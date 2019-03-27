@@ -441,24 +441,26 @@ func getUserInfo(r *http.Request, user *structs.User) error {
 	log.Debugf("stegen getUserInfo() 4")
 
 	providerToken, err := cfg.OAuthClient.Exchange(oauth2.NoContext, r.URL.Query().Get("code"))
+    log.Debugf("stegen getUserInfo(): providerToken=%#v code=%#v", providerToken, r.URL.Query().Get("code"))
 	if err != nil {
+	    log.Debugf("stegen getUserInfo() 5 err=%#v", err)
 		return err
 	}
-	log.Debugf("stegen getUserInfo() 5")
+	log.Debugf("stegen getUserInfo() 6")
 
 	// make the "third leg" request back to google to exchange the token for the userinfo
 	client := cfg.OAuthClient.Client(oauth2.NoContext, providerToken)
 	if cfg.GenOAuth.Provider == cfg.Providers.Google {
-		log.Debugf("stegen getUserInfo() 6")
+		log.Debugf("stegen getUserInfo() 7")
 		return getUserInfoFromGoogle(client, user)
 	} else if cfg.GenOAuth.Provider == cfg.Providers.GitHub {
-		log.Debugf("stegen getUserInfo() 7")
+		log.Debugf("stegen getUserInfo() 8")
 		return getUserInfoFromGitHub(client, user, providerToken)
 	} else if cfg.GenOAuth.Provider == cfg.Providers.OIDC {
-		log.Debugf("stegen getUserInfo() 8")
+		log.Debugf("stegen getUserInfo() 9")
 		return getUserInfoFromOpenID(client, user, providerToken)
 	}
-	log.Debugf("stegen getUserInfo() 9")
+	log.Debugf("stegen getUserInfo() 10")
 	log.Error("we don't know how to look up the user info")
 	return nil
 }
