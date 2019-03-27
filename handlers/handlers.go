@@ -356,6 +356,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 	log.Debug("/auth")
 	// Handle the exchange code to initiate a transport.
 
+	log.Debug("stegen HERE 1")
 	session, err := sessstore.Get(r, cfg.Cfg.Session.Name)
 	if err != nil {
 		log.Errorf("could not find session store %s", cfg.Cfg.Session.Name)
@@ -363,6 +364,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Debug("stegen HERE 2")
 	// is the nonce "state" valid?
 	queryState := r.URL.Query().Get("state")
 	if session.Values["state"] != queryState {
@@ -371,6 +373,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Debug("stegen HERE 3")
 	errorState := r.URL.Query().Get("error")
 	if errorState != "" {
 		errorDescription := r.URL.Query().Get("error_description")
@@ -380,12 +383,14 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+	log.Debug("stegen HERE 4")
 	user := structs.User{}
 	if err := getUserInfo(r, &user); err != nil {
 		log.Error(err)
 		http.Error(w, err.Error(), http.StatusBadRequest)
 		return
 	}
+	log.Debug("stegen HERE 5")
 	log.Debug("CallbackHandler")
 	log.Debug(user)
 
@@ -394,6 +399,7 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 		renderIndex(w, fmt.Sprintf("/auth User is not authorized. %s Please try again.", err))
 		return
 	}
+	log.Debug("stegen HERE 6")
 
 	// SUCCESS!! they are authorized
 
