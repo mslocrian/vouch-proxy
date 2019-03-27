@@ -612,7 +612,7 @@ func getUserInfoFromADFS(r *http.Request, user *structs.User) error {
 	body, _ := ioutil.ReadAll(userinfo.Body)
 	tokenRes := adfsTokenRes{}
 
-    log.Debugf("userinfo=%#v, body=%#v", userinfo, body)
+    log.Errorf("userinfo=%#v, body=%#v", userinfo, body)
 	if err := json.Unmarshal(body, &tokenRes); err != nil {
 		log.Errorf("oauth2: cannot fetch token: %v", err)
 		return nil
