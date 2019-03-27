@@ -428,28 +428,37 @@ func CallbackHandler(w http.ResponseWriter, r *http.Request) {
 // TODO: put all getUserInfo logic into its own pkg
 
 func getUserInfo(r *http.Request, user *structs.User) error {
+	log.Debugf("stegen getUserInfo() 1")
 
 	// indieauth sends the "me" setting in json back to the callback, so just pluck it from the callback
 	if cfg.GenOAuth.Provider == cfg.Providers.IndieAuth {
+		log.Debugf("stegen getUserInfo() 2")
 		return getUserInfoFromIndieAuth(r, user)
 	} else if cfg.GenOAuth.Provider == cfg.Providers.ADFS {
+		log.Debugf("stegen getUserInfo() 3")
 		return getUserInfoFromADFS(r, user)
 	}
+	log.Debugf("stegen getUserInfo() 4")
 
 	providerToken, err := cfg.OAuthClient.Exchange(oauth2.NoContext, r.URL.Query().Get("code"))
 	if err != nil {
 		return err
 	}
+	log.Debugf("stegen getUserInfo() 5")
 
 	// make the "third leg" request back to google to exchange the token for the userinfo
 	client := cfg.OAuthClient.Client(oauth2.NoContext, providerToken)
 	if cfg.GenOAuth.Provider == cfg.Providers.Google {
+		log.Debugf("stegen getUserInfo() 6")
 		return getUserInfoFromGoogle(client, user)
 	} else if cfg.GenOAuth.Provider == cfg.Providers.GitHub {
+		log.Debugf("stegen getUserInfo() 7")
 		return getUserInfoFromGitHub(client, user, providerToken)
 	} else if cfg.GenOAuth.Provider == cfg.Providers.OIDC {
+		log.Debugf("stegen getUserInfo() 8")
 		return getUserInfoFromOpenID(client, user, providerToken)
 	}
+	log.Debugf("stegen getUserInfo() 9")
 	log.Error("we don't know how to look up the user info")
 	return nil
 }
@@ -618,10 +627,10 @@ func getUserInfoFromADFS(r *http.Request, user *structs.User) error {
 	body, _ := ioutil.ReadAll(userinfo.Body)
 	tokenRes := adfsTokenRes{}
 
-    log.Errorf("stegen userinfo=%#v, body=%#v", userinfo, body)
+	log.Errorf("stegen userinfo=%#v, body=%#v", userinfo, body)
 	if err := json.Unmarshal(body, &tokenRes); err != nil {
 		log.Errorf("stegen oauth2: cannot fetch token: %v", err)
-        log.Errorf("stegen userinfo=%#v, body=%#v", userinfo, body)
+		log.Errorf("stegen userinfo=%#v, body=%#v", userinfo, body)
 		log.Errorf("oauth2: cannot fetch token: %v", err)
 		return nil
 	}
