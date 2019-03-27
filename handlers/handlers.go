@@ -614,6 +614,8 @@ func getUserInfoFromADFS(r *http.Request, user *structs.User) error {
 
     log.Errorf("stegen userinfo=%#v, body=%#v", userinfo, body)
 	if err := json.Unmarshal(body, &tokenRes); err != nil {
+		log.Errorf("stegen oauth2: cannot fetch token: %v", err)
+        log.Errorf("stegen userinfo=%#v, body=%#v", userinfo, body)
 		log.Errorf("oauth2: cannot fetch token: %v", err)
 		return nil
 	}
