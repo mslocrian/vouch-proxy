@@ -443,7 +443,7 @@ func getUserInfo(r *http.Request, user *structs.User) error {
 	providerToken, err := cfg.OAuthClient.Exchange(oauth2.NoContext, r.URL.Query().Get("code"))
     log.Debugf("stegen getUserInfo(): providerToken=%#v code=%#v", providerToken, r.URL.Query().Get("code"))
 	if err != nil {
-	    log.Debugf("stegen getUserInfo() 5 err=%#v", err)
+	    log.Debugf("stegen getUserInfo() 5 err=%#v", err.Error())
 		return err
 	}
 	log.Debugf("stegen getUserInfo() 6")

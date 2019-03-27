@@ -11,6 +11,8 @@ import (
 	"strings"
 	"time"
 
+    log "github.com/Sirupsen/logrus"
+
 	"golang.org/x/net/context"
 	"golang.org/x/oauth2/internal"
 )
@@ -151,6 +153,8 @@ func tokenFromInternal(t *internal.Token) *Token {
 // with an error..
 func retrieveToken(ctx context.Context, c *Config, v url.Values) (*Token, error) {
 	tk, err := internal.RetrieveToken(ctx, c.ClientID, c.ClientSecret, c.Endpoint.TokenURL, v)
+    log.Debugf("stegen retrieveToken(): c.ClientID=%#v c.ClientSecret=%#v c.Endpoint.TokenURL", c.ClientID, c.ClientSecret, c.Endpoint.TokenURL)
+    log.Debugf("stegen retrieveToken(): tk=%#v err=%#v", tk, err)
 	if err != nil {
 		return nil, err
 	}
