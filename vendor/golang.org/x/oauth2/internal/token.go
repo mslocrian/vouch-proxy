@@ -17,6 +17,8 @@ import (
 	"strings"
 	"time"
 
+    log "github.com/Sirupsen/logrus"
+
 	"golang.org/x/net/context"
 )
 
@@ -165,10 +167,12 @@ func providerAuthHeaderWorks(tokenURL string) bool {
 }
 
 func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string, v url.Values) (*Token, error) {
+    log.Debugf("stegen RetrieveToken(): HERE 1")
 	hc, err := ContextClient(ctx)
 	if err != nil {
 		return nil, err
 	}
+    log.Debugf("stegen RetrieveToken(): HERE 2")
 	bustedAuth := !providerAuthHeaderWorks(tokenURL)
 	if bustedAuth {
 		if clientID != "" {
@@ -178,27 +182,33 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 			v.Set("client_secret", clientSecret)
 		}
 	}
+    log.Debugf("stegen RetrieveToken(): HERE 3")
 	req, err := http.NewRequest("POST", tokenURL, strings.NewReader(v.Encode()))
 	if err != nil {
 		return nil, err
 	}
+    log.Debugf("stegen RetrieveToken(): HERE 4")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	if !bustedAuth {
 		req.SetBasicAuth(clientID, clientSecret)
 	}
+    log.Debugf("stegen RetrieveToken(): HERE 5")
 	r, err := hc.Do(req)
 	if err != nil {
 		return nil, err
 	}
+    log.Debugf("stegen RetrieveToken(): HERE 6")
 	defer r.Body.Close()
 	body, err := ioutil.ReadAll(io.LimitReader(r.Body, 1<<20))
 	if err != nil {
 		return nil, fmt.Errorf("oauth2: cannot fetch token: %v", err)
 	}
+    log.Debugf("stegen RetrieveToken(): HERE 7")
 	if code := r.StatusCode; code < 200 || code > 299 {
 		return nil, fmt.Errorf("oauth2: cannot fetch token: %v\nResponse: %s", r.Status, body)
 	}
 
+    log.Debugf("stegen RetrieveToken(): HERE 8")
 	var token *Token
 	content, _, _ := mime.ParseMediaType(r.Header.Get("Content-Type"))
 	switch content {
