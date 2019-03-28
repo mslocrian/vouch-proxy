@@ -190,6 +190,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
     log.Debugf("stegen RetrieveToken(): HERE 4")
 	req.Header.Set("Content-Type", "application/x-www-form-urlencoded")
 	if !bustedAuth {
+        log.Debugf("stegen RetrieveToken(): THIS NEEDS TO GET HIT")
 		req.SetBasicAuth(clientID, clientSecret)
 	}
     log.Debugf("stegen RetrieveToken(): HERE 5")
