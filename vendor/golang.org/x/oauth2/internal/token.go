@@ -174,6 +174,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 	}
     log.Debugf("stegen RetrieveToken(): HERE 2")
 	bustedAuth := !providerAuthHeaderWorks(tokenURL)
+    /*
 	if bustedAuth {
 		if clientID != "" {
 			v.Set("client_id", clientID)
@@ -182,6 +183,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 			v.Set("client_secret", clientSecret)
 		}
 	}
+    */
     log.Debugf("stegen RetrieveToken(): HERE 3")
 	req, err := http.NewRequest("POST", tokenURL, strings.NewReader(v.Encode()))
 	if err != nil {
