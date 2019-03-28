@@ -192,7 +192,10 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 	if !bustedAuth {
         log.Debugf("stegen RetrieveToken(): THIS NEEDS TO GET HIT")
 		req.SetBasicAuth(clientID, clientSecret)
-	}
+	} else {
+        log.Debugf("stegen RetrieveToken(): FORCING BASIC AUTH!")
+		req.SetBasicAuth(clientID, clientSecret)
+    }
     log.Debugf("stegen RetrieveToken(): HERE 5")
     log.Debugf("stegen RetrieveToken(): req.URL=%#v", req.URL)
 	r, err := hc.Do(req)
