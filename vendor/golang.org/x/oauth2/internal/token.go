@@ -185,7 +185,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 	}
     */
     log.Debugf("stegen RetrieveToken(): HERE 3")
-    log.Debugf("stegen RetrieveToken(): tokenUrl=%#v v=%#v", tokenUrl, v)
+    log.Debugf("stegen RetrieveToken(): tokenURL=%#v v=%#v", tokenURL, v)
 	req, err := http.NewRequest("POST", tokenURL, strings.NewReader(v.Encode()))
 	if err != nil {
 		return nil, err
