@@ -193,6 +193,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 		req.SetBasicAuth(clientID, clientSecret)
 	}
     log.Debugf("stegen RetrieveToken(): HERE 5")
+    log.Debugf("stegen RetrieveToken(): req=%#v", req)
 	r, err := hc.Do(req)
 	if err != nil {
 		return nil, err
@@ -204,6 +205,7 @@ func RetrieveToken(ctx context.Context, clientID, clientSecret, tokenURL string,
 		return nil, fmt.Errorf("oauth2: cannot fetch token: %v", err)
 	}
     log.Debugf("stegen RetrieveToken(): HERE 7")
+    log.Debugf("stegen RetrieveToken(): body=%v code=%#v", body, r.StatusCode)
 	if code := r.StatusCode; code < 200 || code > 299 {
 		return nil, fmt.Errorf("oauth2: cannot fetch token: %v\nResponse: %s", r.Status, body)
 	}
